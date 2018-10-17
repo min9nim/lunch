@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch } from "react-router-dom";
-import List from "./List";
-import Write from "./Write";
+import List from "./pages/List";
+import Write from "./pages/Write";
 //import logo from './logo.svg';
 import './App.css';
 

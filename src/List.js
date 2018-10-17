@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
+
 //import './List.css';
 
 class List extends Component {
@@ -43,7 +45,7 @@ class List extends Component {
                     </tr>
                 </tbody>
             </table>
-            <button type="button" className="btn btn-success">등록</button>
+            <Link to="/write"><button type="button" className="btn btn-success">등록</button></Link>
         </div>
 
 

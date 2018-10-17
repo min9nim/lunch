@@ -1,40 +1,32 @@
 import nprogress from "nprogress";
-import $m from "../com/util";
+import $m from "./com/util";
 import React from "react";
 
 console.log("lunch.js start");
 
 const PAGEROWS = 10;
 
-export let app = {
+let app = {
   view : {},          // 전역에서 관리될 필요가 있는 리액트 뷰들
+  state : {
+    data : []
+  },
 };
 
+export default app;
 
 
-
-
-app.state = {
-    data: []
-}
-
-
-async function getData() {
+const initData = async () => {
     let response = await fetch(
-        "/data.do",
+        "/data.json",
         {
-            method: "POST",
+            method: "GET",
         }
     );
     let res = await response.json();
     
     app.state.data = res;
-
-    return res;
-}
-
-if(app.state.length === 0){
-    getData();
+    app.view.List && app.view.List.setState({data : app.state.data});
 }
 
 
@@ -66,9 +58,9 @@ app.bodyScroll = function () {
 
 
   if (
-    (scrollTop + clientHeight == scrollHeight)    // 일반적인 경우(데스크탑: 크롬/파폭, 아이폰: 사파리)
+    (scrollTop + clientHeight === scrollHeight)    // 일반적인 경우(데스크탑: 크롬/파폭, 아이폰: 사파리)
     ||
-    (app.isMobileChrome() && (scrollTop + clientHeight == scrollHeight - 56))   // 모바일 크롬(55는 위에 statusbar 의 높이 때문인건가)
+    (app.isMobileChrome() && (scrollTop + clientHeight === scrollHeight - 56))   // 모바일 크롬(55는 위에 statusbar 의 높이 때문인건가)
   ){ //스크롤이 마지막일때
   
   /*
@@ -131,10 +123,10 @@ app.getCookie = function (cname) {
   var ca = decodedCookie.split(';');
   for(var i = 0; i <ca.length; i++) {
       var c = ca[i];
-      while (c.charAt(0) == ' ') {
+      while (c.charAt(0) === ' ') {
           c = c.substring(1);
       }
-      if (c.indexOf(name) == 0) {
+      if (c.indexOf(name) === 0) {
           return c.substring(name.length, c.length);
       }
   }
@@ -217,8 +209,10 @@ app.confirm = function({message, style, width, onYes, onNo}){
 }
 
 
-app.init = function(){
-  app.user = app.getUser();
+app.init = function(){ 
+  if(app.state.data.length === 0){
+    initData();
+  }
 }
 
 

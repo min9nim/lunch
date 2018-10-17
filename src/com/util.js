@@ -14,7 +14,7 @@ module.exports = $m;
 
 $m.fn = {
     init: function(sel) {
-        if (typeof sel == "string") {
+        if (typeof sel === "string") {
             this.sel = sel;
             this.doms = document.querySelectorAll(sel);
             this.length = this.doms.length;
@@ -35,7 +35,7 @@ $m.fn = {
     },
 
     html: function(html) {
-        if (this.length == 0) return;
+        if (this.length === 0) return;
 
         if (html === undefined) {
             return this.doms[0].innerHTML;
@@ -49,7 +49,7 @@ $m.fn = {
     },
 
     text: function(text) {
-        if (this.length == 0) return;
+        if (this.length === 0) return;
 
         if (text === undefined) {
             return this.doms[0].textContent;
@@ -63,7 +63,7 @@ $m.fn = {
     },
 
     css: function(name, value) {
-        if (this.length == 0) return;
+        if (this.length === 0) return;
 
         if (value === undefined) {
             return this.doms[0].style[name];
@@ -85,7 +85,7 @@ $m.fn = {
 
 
     position: function() {
-        if (this.length == 0) return;
+        if (this.length === 0) return;
 
         var top = this.doms[0].style["top"];
         top = Number(top.substring(0, top.length - 2));
@@ -138,7 +138,7 @@ $m.fn = {
 
 
     attr: function(name, value) {
-        if (this.length == 0) return;
+        if (this.length === 0) return;
 
         if (value === undefined) {
             return this.doms[0].getAttribute(name);
@@ -153,7 +153,7 @@ $m.fn = {
 
 
     removeAttr: function(name) {
-        if (this.length == 0) return;
+        if (this.length === 0) return;
 
         $m._each(this.doms, function(dom) {
             dom.removeAttribute(name);
@@ -242,7 +242,7 @@ $m.fn = {
     },
 
     val: function(value) {
-        if (this.length == 0) return;
+        if (this.length === 0) return;
 
         if (value === undefined) {
             return this.doms[0].value;
@@ -256,7 +256,7 @@ $m.fn = {
     },
 
     focus: function() {
-        if (this.length == 0) return;
+        if (this.length === 0) return;
 
         this.doms[0].focus();
     }
@@ -282,27 +282,6 @@ $m.clone = function(elem) {
 $m.scrollTo = function(x, y) {
     return window.scrollTo(x, y);
 };
-
-
-$m.txtToHtml = function(str, word){
-    if(word){
-        var reg = new RegExp("("+word+")", "gi");
-    }
-
-    return str.split("\n").map(function(val){
-        return val.split(" ").map(function(val){
-            let newval = val;
-            if(word){ // 매칭단어 하이라이트
-                newval = newval.replace(reg, '<span style="background-color:yellow;">$1</span>');
-            }
-            if(val.indexOf("http://") == 0 || val.indexOf("https://") == 0){
-                return `<a href="${val}" target="_blank">${newval}</a>`;
-            }else{
-                return newval;
-            }
-        }).join(" ").replace(/  /gi, "&nbsp;&nbsp");   // html태그를 사용하기 위해 html태그 밖에서만 공백문자를 &nbsp; 치환할 수 있도록 수정 필요
-    }).join("<br/>");   // 새줄문자 <br/> 치환
-}
 
 
 
@@ -384,8 +363,8 @@ $m._reduce = function(list, iter, init) {
 
 $m._slice = function(list, begin, end) {
     if (typeof arguments[0] === "number") {
-        var begin = arguments[0];
-        var end = arguments[1];
+        begin = arguments[0];
+        end = arguments[1];
         return function(list) {
             return Array.prototype.slice.call(list, begin, end);
         };

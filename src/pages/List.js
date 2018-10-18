@@ -19,7 +19,7 @@ class List extends Component {
 
 
     edit(e){
-        app.state.view.selected = Number(e.target.parentNode.getAttribute("seq"));
+        app.state.view.selected = e.target.parentNode.getAttribute("seq");
         this.props.history.push("/write");  
     }
 
@@ -34,7 +34,7 @@ class List extends Component {
                             <th scope="col">#</th>
                             <th scope="col">메뉴</th>
                             <th scope="col">식당명</th>
-                            <th scope="col">장소</th>
+                            <th scope="col">위치</th>
                             <th scope="col">최종방문</th>
                             <th scope="col">비고</th>
                         </tr>

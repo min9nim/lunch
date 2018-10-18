@@ -21,14 +21,18 @@ export default app;
 
 const initData = async () => {
     let response = await fetch(
-        "/data.json",
+        //"/data.json",
+        "/api/list",
         {
             method: "GET",
         }
     );
-    let res = await response.json();
-    
-    app.state.data = res;
+    try{
+      let res = await response.json();
+      app.state.data = res.lunchs;
+    }catch{
+      app.state.data = [];
+    }
     app.view.List && app.view.List.setState({data : app.state.data});
 }
 

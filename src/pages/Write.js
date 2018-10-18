@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import moment from "moment";
 import app from '../lunch.js';
 
 import './Write.scss';
@@ -12,6 +13,7 @@ export default class Write extends Component {
             menu: "",
             restaurant: "",
             location: "",
+            lastVisited: moment().format("YYYYMMDD"),
             etc : "",
         }
 
@@ -25,21 +27,64 @@ export default class Write extends Component {
     }
         
 
-    save(){
-        if(this.props.selected){
-            let asis = app.state.data.find(r => r.seq === this.props.selected.seq);
-            Object.assign(asis, this.state);
-        }else{
-            app.state.data.push(Object.assign({}, this.state, {seq: app.state.data.length}));
+    async save(){
+        if(this.state.menu === ""){
+            alert("메뉴을 입력하세요");
+            return;
         }
-        this.props.history.push("/list");
+
+
+        let response = await fetch(
+            "/api/add",
+            {
+                method: "POST",
+                headers: new Headers({"Content-Type": "application/json"}),
+                body: JSON.stringify(this.state),
+            }
+        );
+
+        try{
+            let res = await response.json();
+            console.log(JSON.stringify(res, null, 2));
+
+            if(this.props.selected){
+                let asis = app.state.data.find(r => r.seq === this.props.selected.seq);
+                Object.assign(asis, this.state);
+            }else{
+                app.state.data.push(Object.assign({}, this.state, {seq: app.state.data.length}));
+            }
+            this.props.history.push("/list");
+
+        }catch{
+            console.log("등록 오류");
+        }
+
     }
 
-    remove(){
-        if(window.confirm("삭제합니다")){
+    async remove(){
+        if(!window.confirm("삭제합니다")){
+            return;
+        }
+
+        let response = await fetch(
+            "/api/remove",
+            {
+                method: "POST",
+                headers: new Headers({"Content-Type": "application/json"}),
+                body: JSON.stringify({seq: this.state.seq}),
+            }
+        );
+
+        try{
+            let res = await response.json();
+            console.log(JSON.stringify(res, null, 2));
+
             let idx = app.state.data.indexOf(this.props.selected);
             app.state.data.splice(idx, 1);
             this.props.history.push("/list");    
+
+        }catch{
+            console.log("등록 오류");
         }
     }
 
@@ -59,6 +104,11 @@ export default class Write extends Component {
                     <label htmlFor="location">위치</label>
                     <input type="text" className="form-control" id="location" placeholder="위치" value={this.state.location} onChange={this.handleChange}/>
                 </div>
+                <div className="form-group">
+                    <label htmlFor="location">최종방문</label>
+                    <input type="text" className="form-control" id="lastVisited" placeholder="최종방문일" value={this.state.lastVisited} onChange={this.handleChange}/>
+                </div>
+
                 <div className="form-group">
                     <label htmlFor="etc">비고</label>
                     <input type="text" className="form-control" id="etc" placeholder="비고" value={this.state.etc} onChange={this.handleChange}/>

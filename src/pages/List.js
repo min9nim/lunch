@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-//import './List.css';
+import './List.scss';
 
 import app from '../lunch.js';
 
@@ -14,7 +14,16 @@ class List extends Component {
             data : app.state.data,
         }
         app.view.List = this;
+        app.state.view.selected = undefined;
     }
+
+
+    edit(e){
+        app.state.view.selected = Number(e.target.parentNode.getAttribute("seq"));
+        this.props.history.push("/write");  
+    }
+
+
     render() {
         console.log("length : " + app.state.data.length);
         return (
@@ -35,7 +44,7 @@ class List extends Component {
                             this.state.data.length > 0
                             ?
                             this.state.data.map((row, i) => 
-                                <tr key={row.seq}>
+                                <tr key={row.seq} seq={row.seq} onClick={this.edit.bind(this)}>
                                     <th scope="row">{i+1}</th>
                                     <td>{row.menu}</td>
                                     <td>{row.restaurant}</td>
@@ -49,14 +58,8 @@ class List extends Component {
                                 )
                             :
                             <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>                        
-
+                                <td rowSpan="6">No data</td>
+                            </tr>
                         }
                     </tbody>
                 </table>

@@ -9,7 +9,10 @@ const PAGEROWS = 10;
 let app = {
   view : {},          // 전역에서 관리될 필요가 있는 리액트 뷰들
   state : {
-    data : []
+    data : [],
+    view: {
+      selected: ""
+    }
   },
 };
 

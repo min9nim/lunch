@@ -8,12 +8,13 @@ export default class Write extends Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.state = {
+        this.state = this.props.selected || {
             menu: "",
             restaurant: "",
             location: "",
             etc : "",
         }
+
     }
 
 
@@ -25,15 +26,21 @@ export default class Write extends Component {
         
 
     save(){
-        app.state.data.push(Object.assign({}, this.state, {seq: app.state.data.length}));
-
-        /**
-         * 18/10/17
-         * 아래 문장은 나중에 mobX 에서 reaction 으로 빠져야
-         *  */ 
-        //app.view.List && app.view.List.setState({data : app.state.data});
-
+        if(this.props.selected){
+            let asis = app.state.data.find(r => r.seq === this.props.selected.seq);
+            Object.assign(asis, this.state);
+        }else{
+            app.state.data.push(Object.assign({}, this.state, {seq: app.state.data.length}));
+        }
         this.props.history.push("/list");
+    }
+
+    remove(){
+        if(window.confirm("삭제합니다")){
+            let idx = app.state.data.indexOf(this.props.selected);
+            app.state.data.splice(idx, 1);
+            this.props.history.push("/list");    
+        }
     }
 
 
@@ -57,7 +64,18 @@ export default class Write extends Component {
                     <input type="text" className="form-control" id="etc" placeholder="비고" value={this.state.etc} onChange={this.handleChange}/>
                 </div>
                 <Link to="/list"><button type="button" className="btn btn-success">목록</button></Link>
-                <button type="button" className="btn btn-success" onClick={this.save.bind(this)}>저장</button>
+
+                {
+                    this.props.selected
+                    ?
+                    <React.Fragment>
+                        <button type="button" className="btn btn-success" onClick={this.save.bind(this)}>수정</button>
+                        <button type="button" className="btn btn-success" onClick={this.remove.bind(this)}>삭제</button>
+                    </React.Fragment>
+                    :
+                    <button type="button" className="btn btn-success" onClick={this.save.bind(this)}>저장</button>
+                }
+                
             </div>
         );
     }

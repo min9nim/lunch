@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Route, Switch } from "react-router-dom";
 import List from "./pages/List";
 import Write from "./pages/Write";
+import app from './lunch.js';
+
 
 class App extends Component {
 
@@ -13,9 +15,12 @@ class App extends Component {
     render() {
 
         const renderWrite = ({history, match}) => {
-            return <Write history={history} match={match} /> ;
+            return <Write history={history} match={match} selected={app.state.data.find(r => r.seq === app.state.view.selected)}/> ;
         }
           
+        const renderList = ({history, match}) => {
+            return <List history={history} match={match} /> ;
+        }
           
         return (
             <div className="container">
@@ -24,9 +29,9 @@ class App extends Component {
                 </div>
                 <div className="container">
                     <Switch>{/*Switch는 매칭되는 첫번재꺼만 보여주고 아래꺼는 버림*/}
-                        <Route path="/list" component={List} />
+                        <Route path="/list" render={renderList} />
                         <Route path="/write" render={renderWrite} />          
-                        <Route path="/" component={List} />
+                        <Route path="/" render={renderList} />
                     </Switch>            
                 </div>
             </div>

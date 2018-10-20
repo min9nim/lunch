@@ -47,12 +47,7 @@ export default class Write extends Component {
             let res = await response.json();
             console.log(JSON.stringify(res, null, 2));
 
-            if(this.props.selected){
-                let asis = app.state.data.find(r => r.seq === this.props.selected.seq);
-                Object.assign(asis, this.state);
-            }else{
-                app.state.data.push(Object.assign({}, this.state, {seq: app.state.data.length}));
-            }
+            app.state.data.push(Object.assign({}, this.state, {seq: app.state.data.length}));
             this.props.history.push("/list");
 
         }catch{
@@ -60,6 +55,37 @@ export default class Write extends Component {
         }
 
     }
+
+    async edit(){
+        if(this.state.menu === ""){
+            alert("메뉴을 입력하세요");
+            return;
+        }
+
+        let response = await fetch(
+            "/api/edit",
+            {
+                method: "POST",
+                headers: new Headers({"Content-Type": "application/json"}),
+                body: JSON.stringify(this.state),
+            }
+        );
+
+        try{
+            let res = await response.json();
+            console.log(JSON.stringify(res, null, 2));
+
+            
+            let asis = app.state.data.find(r => r.seq === this.props.selected.seq);
+            Object.assign(asis, this.state);
+
+            this.props.history.push("/list");
+
+        }catch{
+            console.log("수정 오류");
+        }
+
+    }    
 
     async remove(){
         if(!window.confirm("삭제합니다")){
@@ -91,7 +117,7 @@ export default class Write extends Component {
 
     render() {
         return (
-            <div>
+            <div className="form">
                 <div className="form-group">
                     <label htmlFor="menu">메뉴</label>
                     <input type="text" className="form-control" id="menu" placeholder="메뉴" value={this.state.menu} onChange={this.handleChange}/>
@@ -119,7 +145,7 @@ export default class Write extends Component {
                     this.props.selected
                     ?
                     <React.Fragment>
-                        <button type="button" className="btn btn-success" onClick={this.save.bind(this)}>수정</button>
+                        <button type="button" className="btn btn-success" onClick={this.edit.bind(this)}>저장</button>
                         <button type="button" className="btn btn-success" onClick={this.remove.bind(this)}>삭제</button>
                     </React.Fragment>
                     :

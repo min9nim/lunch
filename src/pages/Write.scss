@@ -1,8 +1,10 @@
-.btn {
-    margin-right: 5px;
+.form {
+    .btn {
+        margin-right: 5px;
+    }
+    
+    .form-group input::placeholder {
+        color: #aaa;
+        font-style: italic;
+    }
 }
-
-.form-group input::placeholder {
-    color: #aaa;
-    font-style: italic;
-  }

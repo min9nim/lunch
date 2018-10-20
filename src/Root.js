@@ -3,12 +3,13 @@ import { BrowserRouter, Route } from "react-router-dom";
 import App from "./App";
 
 
-
-const Root = () => (
-    <BrowserRouter>
-        <Route path="/" component={App} />
-    </BrowserRouter>
-);
+const Root = (props) => {
+    return (
+        <BrowserRouter>
+            <Route path="/" component={App} />
+        </BrowserRouter>
+    )
+};
 
 
 // class Root extends React.Component {

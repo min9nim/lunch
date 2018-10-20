@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+import ListTable from "./component/ListTable";
+import ListDiv from "./component/ListDiv";
 import './List.scss';
 
 import app from '../lunch.js';
@@ -19,6 +20,7 @@ class List extends Component {
 
 
     edit(e){
+        //debugger;
         app.state.view.selected = e.target.parentNode.getAttribute("seq");
         this.props.history.push("/write");  
     }
@@ -27,44 +29,7 @@ class List extends Component {
     render() {
         console.log("length : " + app.state.data.length);
         return (
-            <div>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">메뉴</th>
-                            <th scope="col">식당명</th>
-                            <th scope="col">위치</th>
-                            <th scope="col">최종방문</th>
-                            <th scope="col">비고</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            this.state.data.length > 0
-                            ?
-                            this.state.data.map((row, i) => 
-                                <tr key={row.seq} seq={row.seq} onClick={this.edit.bind(this)}>
-                                    <th scope="row">{i+1}</th>
-                                    <td>{row.menu}</td>
-                                    <td>{row.restaurant}</td>
-                                    <td>{row.location}</td>
-                                    <td>{
-                                        row.lastVisited &&
-                                        (row.lastVisited.substr(0,4) + "/" + row.lastVisited.substr(4,2) + "/" + row.lastVisited.substr(6,2))
-                                    }</td>
-                                    <td>{row.etc}</td>
-                                </tr>                            
-                                )
-                            :
-                            <tr>
-                                <td rowSpan="6">No data</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-                <Link to="/write"><button type="button" className="btn btn-success">등록</button></Link>
-            </div>
+            <ListDiv list={this.state.data} edit={this.edit.bind(this)}/>
         );
     }
 }

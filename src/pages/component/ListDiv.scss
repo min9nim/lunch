@@ -1,0 +1,41 @@
+
+.list-div {
+    .header {
+        background-color: #fafafa;
+    }
+    .flex-container {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        //background-color: DodgerBlue;
+        border-bottom: 1px solid #eee;
+        justify-content: center;
+        //margin: 5px 0px;
+        padding: 10px 0px;
+    
+        div {
+            //background-color: #f1f1f1;
+            //min-width: 100px;
+            flex: 8;
+            text-align: center;
+            //border: 1px solid red;
+        }
+
+        .col1 {
+            flex: 2;
+        }
+        .col2, .col3, .col4, .col5 {
+            min-width: 100px;
+        }
+        .col6 {
+            min-width: 200px;
+            flex: 16;
+        }
+
+    }
+
+    .btn {
+        margin: 5px 0px;
+    }
+      
+} 

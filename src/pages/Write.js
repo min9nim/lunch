@@ -45,9 +45,8 @@ export default class Write extends Component {
 
         try{
             let res = await response.json();
-            console.log(JSON.stringify(res, null, 2));
-
-            app.state.data.push(Object.assign({}, this.state, {seq: app.state.data.length}));
+            //console.log(JSON.stringify(res, null, 2));
+            app.state.data.push(Object.assign({}, this.state, {seq: res.output.seq}));
             this.props.history.push("/list");
 
         }catch{
@@ -114,13 +113,17 @@ export default class Write extends Component {
         }
     }
 
+    componentDidMount(){
+        this.ipt_menu.focus();
+    }
+
 
     render() {
         return (
             <div className="form">
                 <div className="form-group">
                     <label htmlFor="menu">메뉴</label>
-                    <input type="text" className="form-control" id="menu" placeholder="메뉴" value={this.state.menu} onChange={this.handleChange}/>
+                    <input type="text" className="form-control" id="menu" ref={el => this.ipt_menu = el} placeholder="메뉴" value={this.state.menu} onChange={this.handleChange}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="restaurant">식당이름</label>

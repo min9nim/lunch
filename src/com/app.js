@@ -1,8 +1,8 @@
 import nprogress from "nprogress";
-import $m from "./com/util";
+import $m from "./util";
 import React from "react";
 
-console.log("lunch.js start");
+console.log("app.js start");
 
 const PAGEROWS = 10;
 
@@ -35,8 +35,6 @@ const initData = async () => {
     }
     app.view.List && app.view.List.setState({data : app.state.data});
 }
-
-
 
 
 app.bodyScroll = function () {

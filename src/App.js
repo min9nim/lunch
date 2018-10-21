@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch } from "react-router-dom";
 import List from "./pages/List";
 import Write from "./pages/Write";
-import app from './lunch.js';
+import app from './com/app.js';
 import "./App.scss"
 
 

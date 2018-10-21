@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import moment from "moment";
-import app from '../lunch.js';
+import app from '../com/app.js';
 
 import './Write.scss';
 

@@ -5,6 +5,7 @@ import moment from "moment";
 import app from '../com/app.js';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Write.scss';
+import { decorate, observable, reaction } from 'mobx';
 
 export default class Write extends Component {
     constructor(props) {
@@ -17,18 +18,29 @@ export default class Write extends Component {
             lastVisited: moment().format("YYYYMMDD"),
             etc: "",
         }
+        decorate(this, {state: observable});
+        // autorun(() => {
+        //     console.log(JSON.stringify(this.state));
+        //     this.forceUpdate();
+        // });
+        reaction(() => JSON.stringify(this.state), (data) => {
+            this.forceUpdate()
+        });
 
     }
 
 
     handleChange(e) {
-        const state = {};
-        state[e.target.id] = e.target.value;
-        this.setState(state);
+        //const state = {};
+        //state[e.target.id] = e.target.value;
+        //this.setState(state);
+        this.state[e.target.id] = e.target.value;
+        
     }
 
     dateSelected(date) {
-        this.setState({lastVisited : date.format("YYYYMMDD")});
+        // this.setState({lastVisited : date.format("YYYYMMDD")});
+        this.state.lastVisited = date.format("YYYYMMDD")
     }
 
 
@@ -140,7 +152,7 @@ export default class Write extends Component {
                     <label htmlFor="location">최종방문</label>
                     <DatePicker
                         dateFormat="YYYY/MM/DD"
-                        selected={moment(this.state.lastVisited, "YYYYMMDD")}
+                        selected={moment(this.state.lastVisited || "20180101", "YYYYMMDD")}
                         onChange={this.dateSelected.bind(this)} />
                 </div>
 

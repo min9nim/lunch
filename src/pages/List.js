@@ -21,7 +21,6 @@ class List extends Component {
     }
 
     async edit(e){
-        //debugger;
         app.state.view.selected = e.target.parentNode.getAttribute("seq");
         if(app.state.view.selected === null){
             return;

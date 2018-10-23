@@ -3,6 +3,9 @@
     .header {
         background-color: #fafafa;
     }
+    .body > div > div {
+        cursor: pointer;
+    }
     .flex-container {
         width: 100%;
         display: flex;

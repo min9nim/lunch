@@ -1,10 +1,11 @@
-import nprogress from "nprogress";
-import $m from "./util";
+//import nprogress from "nprogress";
+//import $m from "./util";
 import React from "react";
+import {observable, autorun, decorate} from 'mobx';
 
 console.log("app.js start");
 
-const PAGEROWS = 10;
+//const PAGEROWS = 10;
 
 let app = {
   view : {},          // 전역에서 관리될 필요가 있는 리액트 뷰들
@@ -15,8 +16,23 @@ let app = {
     }
   },
 };
-
 export default app;
+
+decorate(app, {
+  state : observable
+})
+
+autorun(() => {
+  /**
+   * 18.10.23
+   * 왜 app.state.data.length 값을 참조하는 경우에만 auturun이 두번 호출되는 건지 잘 모르겠어..
+   */
+  //console.log("autorun called.. app.state.data.length = " + app.state.data.length);
+  if(app.state.data.length > 0){
+    //app.view.List && app.view.List.setState({data : app.state.data});
+    app.view.List && app.view.List.forceUpdate();
+  }
+});
 
 
 const initData = async () => {
@@ -28,16 +44,18 @@ const initData = async () => {
         }
     );
     try{
+
       let res = await response.json();
       app.state.data = res.lunchs;
     }catch{
+      console.log("ㅇㅕ기??")
       app.state.data = [];
     }
 
     // 상태변화에 따른 UI변화 코딩은 mobX로 제거 가능
-    app.view.List && app.view.List.setState({data : app.state.data});
+    //app.view.List && app.view.List.setState({data : app.state.data});
 }
-
+//action(initData);
 
 
 app.checkStatus = function(res){
